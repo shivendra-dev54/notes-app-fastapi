@@ -13,7 +13,6 @@ class SignUpRequest(BaseModel):
 
 
 class NoteCreateRequest(BaseModel):
-    user_id: int
     content: str
 
 
