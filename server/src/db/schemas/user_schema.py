@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, func
+from sqlalchemy.orm import relationship
 from src.config.db_connect import Base
 
 class User(Base):
@@ -10,6 +11,9 @@ class User(Base):
     password = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
-    # store tokens in DB
+    # Store tokens in DB
     access_token = Column(String, nullable=True)
     refresh_token = Column(String, nullable=True)
+
+    # Relationship (must match Note.user)
+    notes = relationship("Note", back_populates="user", cascade="all, delete")

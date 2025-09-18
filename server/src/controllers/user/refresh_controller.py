@@ -1,6 +1,6 @@
 from fastapi import Response, Cookie, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy import select
 from jose import JWTError, jwt
 from datetime import timedelta
 
@@ -12,18 +12,24 @@ from src.utils.jwt_handler import SECRET_KEY, ALGORITHM, create_access_token
 
 async def refresh_token_controller(
     response: Response,
-    refresh_token: str | None = Cookie(default=None),
-    db: AsyncSession = Depends(get_db)
+    refresh_token: str | None,
+    db: AsyncSession
 ):
     if not refresh_token:
-        return APIResponse.error_response(message="Refresh token missing", status_code=401).model_dump()
+        return APIResponse.error_response(
+            message="Refresh token missing", 
+            status=401
+        ).model_dump()
 
     # find user by refresh token
     stmt = select(User).where(User.refresh_token == refresh_token)
     result = await db.execute(stmt)
     user = result.scalars().first()
     if not user:
-        return APIResponse.error_response(message="Invalid refresh token", status_code=401).model_dump()
+        return APIResponse.error_response(
+            message="Invalid refresh token", 
+            status=401
+        ).model_dump()
 
     # validate refresh token
     try:
@@ -32,7 +38,10 @@ async def refresh_token_controller(
         if str(user.id) != user_id:
             raise JWTError()
     except JWTError:
-        return APIResponse.error_response(message="Invalid refresh token", status_code=401).model_dump()
+        return APIResponse.error_response(
+            message="Invalid refresh token", 
+            status=401
+        ).model_dump()
 
     # generate new access token
     access_token = create_access_token({"sub": str(user.id)})
@@ -43,6 +52,14 @@ async def refresh_token_controller(
     await db.refresh(user)
 
     # set new cookie
-    response.set_cookie("access_token", access_token, httponly=True, secure=True, samesite="Lax")
+    response.set_cookie(
+        "access_token", 
+        access_token, 
+        httponly=True, 
+        secure=True, 
+        samesite="Lax"
+    )
 
-    return APIResponse.success_response(message="Access token refreshed").model_dump()
+    return APIResponse.success_response(
+        message="Access token refreshed"
+    ).model_dump()

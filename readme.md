@@ -76,7 +76,7 @@ pip install -r requirements.txt
 4. Create a `.env` file in `src/config`:
 
 ```env
-neon_db_connection_string=postgresql+asyncpg://<username>:<password>@<host>:<port>/<database>
+db_connection_string=postgresql+asyncpg://<username>:<password>@<host>:<port>/<database>
 SECRET_KEY=<your-jwt-secret-key>
 ```
 

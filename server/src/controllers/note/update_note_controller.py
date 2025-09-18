@@ -8,7 +8,13 @@ from src.routes.schemas import NoteUpdateRequest
 from src.middlewares.auth_middleware import get_current_user
 from fastapi import HTTPException
 
-async def update_note_controller(note_id: int, payload: NoteUpdateRequest, response: Response, db: AsyncSession = Depends(get_db), current_user=Depends(get_current_user)):
+async def update_note_controller(
+    note_id: int, 
+    payload: NoteUpdateRequest, 
+    response: Response, 
+    db: AsyncSession = Depends(get_db), 
+    current_user=Depends(get_current_user)
+):
     result = await db.execute(select(Note).where(Note.id == note_id, Note.user_id == current_user.id))
     note = result.scalars().first()
     

@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from server.src.controllers.health.server_health_controller import server_health_controller
+from src.controllers.health.server_health_controller import server_health_controller
 
 health_router = APIRouter(
     prefix="/server",

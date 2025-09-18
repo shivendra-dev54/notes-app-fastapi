@@ -1,6 +1,6 @@
 from fastapi import Response, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy import select
 from passlib.context import CryptContext
 
 from src.config.db_connect import get_db
@@ -17,7 +17,10 @@ async def sign_up_controller(payload: SignUpRequest, response: Response, db: Asy
     result = await db.execute(stmt)
     existing_user = result.scalars().first()
     if existing_user:
-        return APIResponse.error_response(message="User already exists", status_code=400).model_dump()
+        return APIResponse.error_response(
+            message="User already exists", 
+            status=400
+        ).model_dump()
 
     # hash password
     hashed_password = pwd_context.hash(payload.password)

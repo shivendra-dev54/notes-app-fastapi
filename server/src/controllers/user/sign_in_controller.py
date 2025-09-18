@@ -1,6 +1,6 @@
 from fastapi import Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy import select
 from passlib.context import CryptContext
 
 from src.config.db_connect import get_db
@@ -13,7 +13,11 @@ from src.utils.jwt_handler import create_access_token, create_refresh_token
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-async def sign_in_controller(payload: SignInRequest, response: Response, db: AsyncSession = Depends(get_db)):
+async def sign_in_controller(
+    payload: SignInRequest, 
+    response: Response, 
+    db: AsyncSession = Depends(get_db)
+):
     """
     Endpoint for signing in an existing user with JWT tokens.
     """
@@ -26,7 +30,7 @@ async def sign_in_controller(payload: SignInRequest, response: Response, db: Asy
     if not user or not pwd_context.verify(payload.password, user.password):
         return APIResponse.error_response(
             message="Invalid email or password",
-            status_code=401
+            status=401
         ).model_dump()
 
     # 2️⃣ Generate tokens
