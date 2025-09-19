@@ -62,5 +62,9 @@ async def sign_in_controller(
     # 5️⃣ Success response
     return APIResponse.success_response(
         message="Login successful",
-        data={"id": user.id, "username": user.username, "email": user.email}
+        data={
+            "id": user.id, 
+            "username": user.username, 
+            "email": user.email
+        }
     ).model_dump()
