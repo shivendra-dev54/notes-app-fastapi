@@ -24,15 +24,15 @@ export default function SignUpPage() {
 			true,
 		);
 		const body = await success.json()
-		if (body.data.success) {
-			navigate("/sign_in");
+		if (body.success) {
+			navigate("/sign-in");
 		}
 	};
 
 	return (
-		<div className="min-h-screen bg-black text-white flex items-center justify-center px-6">
+		<div className="min-h-content mt-40 bg-black text-white flex items-center justify-center px-6">
 			<form
-				onSubmit={handleSubmit}
+				onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}
 				className="w-full max-w-md bg-gray-900 p-8 rounded-lg border border-gray-800"
 			>
 				<h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
@@ -42,7 +42,7 @@ export default function SignUpPage() {
 					name="username"
 					placeholder="Username"
 					value={form.username}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
 					className="w-full p-3 mb-4 bg-black border border-gray-700 rounded text-white"
 				/>
 				<input
@@ -50,7 +50,7 @@ export default function SignUpPage() {
 					name="email"
 					placeholder="Email"
 					value={form.email}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
 					className="w-full p-3 mb-4 bg-black border border-gray-700 rounded text-white"
 				/>
 				<input
@@ -58,7 +58,7 @@ export default function SignUpPage() {
 					name="password"
 					placeholder="Password"
 					value={form.password}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
 					className="w-full p-3 mb-6 bg-black border border-gray-700 rounded text-white"
 				/>
 

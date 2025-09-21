@@ -14,7 +14,7 @@ export default function SignInPage() {
 		setForm({ ...form, [e.target.name]: e.target.value });
 	};
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const res = await request(
 			"/user/sign_in",
@@ -24,7 +24,6 @@ export default function SignInPage() {
 			},
 			"POST"
 		);
-		// console.log(res)
 		const data = await res.json();
 
 		if(data.success){
@@ -34,9 +33,9 @@ export default function SignInPage() {
 	};
 
 	return (
-		<div className="min-h-screen bg-black text-white flex items-center justify-center px-6">
+		<div className="min-h-content mt-40 bg-black text-white flex items-center justify-center px-6">
 			<form
-				onSubmit={handleSubmit}
+				onSubmit={async (e: React.FormEvent<HTMLFormElement>) => await handleSubmit(e)}
 				className="w-full max-w-md bg-gray-900 p-8 rounded-lg border border-gray-800"
 			>
 				<h2 className="text-2xl font-bold mb-6 text-center">Sign In</h2>
@@ -46,7 +45,7 @@ export default function SignInPage() {
 					name="email"
 					placeholder="Email"
 					value={form.email}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
 					className="w-full p-3 mb-4 bg-black border border-gray-700 rounded text-white"
 				/>
 				<input
@@ -54,7 +53,7 @@ export default function SignInPage() {
 					name="password"
 					placeholder="Password"
 					value={form.password}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
 					className="w-full p-3 mb-6 bg-black border border-gray-700 rounded text-white"
 				/>
 

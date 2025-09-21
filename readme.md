@@ -79,6 +79,8 @@ pip install -r requirements.txt
 db_connection_string=postgresql+asyncpg://<username>:<password>@<host>:<port>/<database>
 SECRET_KEY=<your-jwt-secret-key>
 ```
+for local docker container created with docker-compose.yml
+ - postgresql+asyncpg://notes_user:notes_pass@localhost:5432/notes_db
 
 5. Create database tables:
 
